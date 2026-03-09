@@ -1,0 +1,219 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  --background: #F5F2EC;
+  --foreground: #1C2E3E;
+  --card: #FFFFFF;
+  --card-foreground: #1C2E3E;
+  --popover: #FFFFFF;
+  --popover-foreground: #1C2E3E;
+  --primary: #4A8FA5;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F0EDE8;
+  --secondary-foreground: #1C2E3E;
+  --muted: #EAE7E1;
+  --muted-foreground: #8B9EB0;
+  --accent: #EFF6F9;
+  --accent-foreground: #1C2E3E;
+  --destructive: #B8724A;
+  --destructive-foreground: #ffffff;
+  --border: rgba(28, 46, 62, 0.09);
+  --input: #F0EDE8;
+  --input-background: #F0EDE8;
+  --switch-background: #BFD0DB;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #4A8FA5;
+  --chart-1: #4A8FA5;
+  --chart-2: #1edd00;
+  --chart-3: #A8854A;
+  --chart-4: #B8724A;
+  --chart-5: #7B9BB5;
+  --radius: 1rem;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1C2E3E;
+  --sidebar-primary: #4A8FA5;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EFF6F9;
+  --sidebar-accent-foreground: #1C2E3E;
+  --sidebar-border: rgba(28, 46, 62, 0.09);
+  --sidebar-ring: #4A8FA5;
+
+  /* Luma V2 custom tokens */
+  --luma-cream: #F5F2EC;
+  --luma-cream-deep: #EDE9E1;
+  --luma-navy: #1C2E3E;
+  --luma-slate: #5A7080;
+  --luma-muted: #8B9EB0;
+  --luma-teal: #4A8FA5;
+  --luma-sage: #1edd00;
+  --luma-gold: #A8854A;
+  --luma-coral: #B8724A;
+  --luma-indigo: #2619D0;
+  --luma-amber: #FFAA01;
+  --luma-red: #E81A01;
+  --luma-card-border: rgba(28, 46, 62, 0.08);
+  --luma-card-shadow: 0 2px 12px rgba(28, 46, 62, 0.06);
+  --luma-card-shadow-lg: 0 8px 32px rgba(28, 46, 62, 0.10);
+}
+
+.dark {
+  --background: #1A2630;
+  --foreground: #EDE9E1;
+  --card: #213040;
+  --card-foreground: #EDE9E1;
+  --popover: #213040;
+  --popover-foreground: #EDE9E1;
+  --primary: #5BA3BB;
+  --primary-foreground: #1A2630;
+  --secondary: #2A3D4F;
+  --secondary-foreground: #EDE9E1;
+  --muted: #2A3D4F;
+  --muted-foreground: #8B9EB0;
+  --accent: #2A3D4F;
+  --accent-foreground: #EDE9E1;
+  --destructive: #C07858;
+  --destructive-foreground: #EDE9E1;
+  --border: rgba(237, 233, 225, 0.1);
+  --input: #2A3D4F;
+  --ring: #5BA3BB;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.4;
+    color: var(--luma-navy);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.4;
+    color: var(--luma-navy);
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    color: var(--luma-navy);
+  }
+
+  h4 {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    color: var(--luma-navy);
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+
+  /* Custom range styling for Luma V2 */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(28, 46, 62, 0.18);
+    border: 2px solid #2619D0;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    border: 2px solid #2619D0;
+    box-shadow: 0 2px 10px rgba(28, 46, 62, 0.18);
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+  }
+}
