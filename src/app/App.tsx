@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
+import { HashRouter, Routes, Route, Navigate } from 'react-router';
 import { HealthProvider } from './context/HealthContext';
 import { EaseModeProvider } from './context/EaseModeContext';
 import { SheetProvider } from './context/SheetContext';
@@ -14,7 +14,7 @@ export default function App() {
     <HealthProvider>
       <EaseModeProvider>
       <SheetProvider>
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             <Route element={<Layout />}>
               <Route index element={<Home />} />
@@ -26,7 +26,7 @@ export default function App() {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
         <Toaster position="top-center" expand={true} richColors />
       </SheetProvider>
       </EaseModeProvider>
