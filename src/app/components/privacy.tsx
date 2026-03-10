@@ -206,7 +206,7 @@ export function Privacy() {
             },
             {
               icon: Lock,
-              color: '#1edd00',
+              color: '#5E9B85',
               text: 'Your data is never shared with schools, employers, or third parties. You have full control.',
             },
           ].map((item, i) => (

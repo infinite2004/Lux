@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X } from 'lucide-react';
 
 const TEAL = '#4A8FA5';
-const SAGE = '#1edd00';
+const SAGE = '#5E9B85';
 const DURATION = 20;
 
 const LOOK_AWAY_TIPS = [

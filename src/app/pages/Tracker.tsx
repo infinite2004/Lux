@@ -9,9 +9,17 @@ import {
   RefreshCcw,
   Waves,
   ChevronRight,
+  ChevronDown,
   TrendingUp,
   Clock,
   Lightbulb,
+  Sofa,
+  Monitor,
+  BedDouble,
+  UtensilsCrossed,
+  ToggleLeft,
+  ToggleRight,
+  AlertTriangle,
 } from "lucide-react";
 import { useHealth } from "../context/HealthContext";
 
@@ -47,7 +55,7 @@ const exposureSources = [
     peak: 350,
     duration: "45m",
     icon: <Coffee className="size-5" />,
-    color: "#1edd00",
+    color: "#5eb53e",
     desc: "Warm ambient lighting",
     tip: "A good recovery environment",
     time: "3:00 – 3:45 PM",
@@ -66,10 +74,48 @@ const exposureSources = [
   },
 ];
 
+const INITIAL_ROOMS = [
+  { id: "living", name: "Living Room", icon: <Sofa className="size-4" />, on: true, brightness: 65, kelvin: 4000 },
+  { id: "office", name: "Home Office", icon: <Monitor className="size-4" />, on: true, brightness: 78, kelvin: 5000 },
+  { id: "bedroom", name: "Bedroom", icon: <BedDouble className="size-4" />, on: false, brightness: 28, kelvin: 2700 },
+  { id: "kitchen", name: "Kitchen", icon: <UtensilsCrossed className="size-4" />, on: true, brightness: 70, kelvin: 4200 },
+];
+
+function kelvinLabel(k: number) {
+  if (k >= 5000) return "Cool White";
+  if (k >= 3500) return "Neutral";
+  if (k >= 2900) return "Warm White";
+  return "Amber";
+}
+
+function kelvinToColor(k: number) {
+  const t = Math.max(0, Math.min(1, (k - 2000) / 4000));
+  const r = 255;
+  const g = Math.round(180 + 75 * t);
+  const b = Math.round(20 + 235 * t);
+  return `rgb(${r},${g},${b})`;
+}
+
 export function Tracker() {
   const { luxHours, currentLux, environment, load, state } = useHealth();
   const [isScanning, setIsScanning] = useState(false);
   const [expandedSource, setExpandedSource] = useState<string | null>(null);
+  const [rooms, setRooms] = useState(INITIAL_ROOMS);
+  const [expandedRoom, setExpandedRoom] = useState<string | null>(null);
+  const [showWarning, setShowWarning] = useState(false);
+  const [pendingRoomUpdate, setPendingRoomUpdate] = useState<{
+    id: string;
+    patch: Partial<(typeof INITIAL_ROOMS)[0]>;
+  } | null>(null);
+  const [confirmedRoomIds, setConfirmedRoomIds] = useState<Set<string>>(
+    () => {
+      const ids = new Set<string>();
+      INITIAL_ROOMS.forEach((r) => {
+        if (r.brightness > 50 && r.kelvin >= 5000) ids.add(r.id);
+      });
+      return ids;
+    }
+  );
   const totalVal = exposureSources.reduce((s, b) => s + b.val, 0);
 
   const startScan = () => {
@@ -80,7 +126,7 @@ export function Tracker() {
   const getLuxBarColor = () => {
     if (currentLux > 1200) return "#B8724A";
     if (currentLux > 600) return "#FFAA01";
-    return "#1edd00";
+    return "#5eb53e";
   };
 
   const getStateLabel = () => {
@@ -92,15 +138,59 @@ export function Tracker() {
     }
   };
 
+  function updateRoom(id: string, patch: Partial<(typeof INITIAL_ROOMS)[0]>) {
+    if (patch.brightness !== undefined || patch.kelvin !== undefined) {
+      const room = rooms.find((r) => r.id === id);
+      if (room && !confirmedRoomIds.has(id)) {
+        const newBrightness = patch.brightness ?? room.brightness;
+        const newKelvin = patch.kelvin ?? room.kelvin;
+        const crossesBrightness = newBrightness > 50 && room.brightness <= 50;
+        const crossesKelvin = newKelvin >= 5000 && room.kelvin < 5000;
+        if (crossesBrightness || crossesKelvin) {
+          setPendingRoomUpdate({ id, patch });
+          setShowWarning(true);
+          return;
+        }
+      }
+    }
+    setRooms((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, ...patch } : r))
+    );
+  }
+
+  function confirmWarning() {
+    if (pendingRoomUpdate) {
+      setRooms((prev) =>
+        prev.map((r) =>
+          r.id === pendingRoomUpdate.id
+            ? { ...r, ...pendingRoomUpdate.patch }
+            : r
+        )
+      );
+      setConfirmedRoomIds(
+        (prev) => new Set(prev).add(pendingRoomUpdate.id)
+      );
+    }
+    setShowWarning(false);
+    setPendingRoomUpdate(null);
+  }
+
+  function rejectWarning() {
+    setShowWarning(false);
+    setPendingRoomUpdate(null);
+  }
+
   return (
-    <div className="flex flex-col gap-6 px-5 sm:px-6 pt-12 pb-28">
+    <div className="flex flex-col gap-6 px-7 pt-[83px] pb-28">
       {/* Header */}
       <header className="flex flex-col gap-1">
         <p
-          className="text-[#1C2E3E] text-[24px]"
+          className="text-[#1C2E3E] text-[32px]"
           style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontVariationSettings: "'opsz' 14",
+            fontFamily: "'Manuale', serif",
+            fontStyle: "normal",
+            fontWeight: 600,
+            lineHeight: "36px",
           }}
         >
           Light Exposure
@@ -235,7 +325,7 @@ export function Tracker() {
           value={getStateLabel()}
           iconColor={
             state === "Low"
-              ? "#1edd00"
+              ? "#5eb53e"
               : state === "Moderate"
               ? "#A8854A"
               : "#B8724A"
@@ -585,6 +675,217 @@ export function Tracker() {
         </div>
       </section>
 
+      {/* Rooms */}
+      <section className="flex flex-col gap-3">
+        <p
+          className="text-[#1C2E3E] text-[16px]"
+          style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontWeight: 600,
+            fontVariationSettings: "'opsz' 14",
+          }}
+        >
+          Rooms
+        </p>
+        <div className="flex flex-col gap-2.5">
+          {rooms.map((room) => {
+            const isExpanded = expandedRoom === room.id;
+            const warmColor = kelvinToColor(room.kelvin);
+            return (
+              <motion.div
+                key={room.id}
+                layout
+                className="bg-white rounded-[20px] border border-[rgba(28,46,62,0.08)] shadow-[0_2px_12px_rgba(28,46,62,0.05)] overflow-hidden"
+              >
+                <div className="flex items-center gap-3 p-4">
+                  <motion.div
+                    animate={{
+                      backgroundColor: room.on ? warmColor : "#EAE7E1",
+                      boxShadow: room.on
+                        ? `0 0 16px ${warmColor}60`
+                        : "none",
+                    }}
+                    transition={{ duration: 0.5 }}
+                    className="size-10 rounded-2xl flex items-center justify-center flex-shrink-0"
+                  >
+                    <span
+                      className={`transition-colors ${
+                        room.on ? "text-[#1C2E3E]" : "text-[#8b9eb0]"
+                      }`}
+                    >
+                      {room.icon}
+                    </span>
+                  </motion.div>
+                  <div className="flex-1 min-w-0">
+                    <p
+                      className="text-[13px] text-[#1C2E3E]"
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {room.name}
+                    </p>
+                    <p
+                      className="text-[10px] text-[#8b9eb0]"
+                      style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    >
+                      {room.on
+                        ? `${room.brightness}% · ${kelvinLabel(room.kelvin)}`
+                        : "Off"}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => updateRoom(room.id, { on: !room.on })}
+                    className="flex-shrink-0"
+                  >
+                    {room.on ? (
+                      <ToggleRight
+                        className="size-8"
+                        style={{ color: "#2619D0" }}
+                      />
+                    ) : (
+                      <ToggleLeft className="size-8 text-[#C5BFB5]" />
+                    )}
+                  </button>
+                  <button
+                    onClick={() =>
+                      setExpandedRoom(isExpanded ? null : room.id)
+                    }
+                    className="ml-1 flex-shrink-0"
+                  >
+                    <motion.div animate={{ rotate: isExpanded ? 180 : 0 }}>
+                      <ChevronDown className="size-4 text-[#8b9eb0]" />
+                    </motion.div>
+                  </button>
+                </div>
+                <AnimatePresence initial={false}>
+                  {isExpanded && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div
+                        className={`px-4 pb-4 flex flex-col gap-4 transition-opacity ${
+                          room.on
+                            ? "opacity-100"
+                            : "opacity-40 pointer-events-none"
+                        }`}
+                      >
+                        <div className="h-px bg-[rgba(28,46,62,0.06)]" />
+                        {/* Brightness */}
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center justify-between">
+                            <span
+                              className="text-[10px] text-[#8b9eb0] uppercase tracking-[0.1em]"
+                              style={{
+                                fontWeight: 700,
+                                fontFamily: "'Inter', sans-serif",
+                              }}
+                            >
+                              Brightness
+                            </span>
+                            <span
+                              className="text-[12px] text-[#1C2E3E]"
+                              style={{
+                                fontFamily: "'DM Sans', sans-serif",
+                                fontWeight: 700,
+                              }}
+                            >
+                              {room.brightness}%
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min="5"
+                            max="100"
+                            value={room.brightness}
+                            onChange={(e) =>
+                              updateRoom(room.id, {
+                                brightness: Number(e.target.value),
+                              })
+                            }
+                            className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
+                            style={{
+                              accentColor: "#2619D0",
+                              background: "#EAE7E1",
+                            }}
+                          />
+                        </div>
+                        {/* Color Temperature */}
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center justify-between">
+                            <span
+                              className="text-[10px] text-[#8b9eb0] uppercase tracking-[0.1em]"
+                              style={{
+                                fontWeight: 700,
+                                fontFamily: "'Inter', sans-serif",
+                              }}
+                            >
+                              Color Temp
+                            </span>
+                            <span
+                              className="text-[12px] text-[#1C2E3E]"
+                              style={{
+                                fontFamily: "'DM Sans', sans-serif",
+                                fontWeight: 700,
+                              }}
+                            >
+                              {kelvinLabel(room.kelvin)}
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min="2000"
+                            max="6500"
+                            step="100"
+                            value={room.kelvin}
+                            onChange={(e) =>
+                              updateRoom(room.id, {
+                                kelvin: Number(e.target.value),
+                              })
+                            }
+                            className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
+                            style={{
+                              accentColor: "#FFAA01",
+                              background: "#EAE7E1",
+                            }}
+                          />
+                          <div className="flex justify-between">
+                            <span
+                              className="text-[9px] text-[#8b9eb0]"
+                              style={{ fontFamily: "'DM Sans', sans-serif" }}
+                            >
+                              Amber
+                            </span>
+                            <span
+                              className="text-[9px] text-[#8b9eb0]"
+                              style={{ fontFamily: "'DM Sans', sans-serif" }}
+                            >
+                              Cool White
+                            </span>
+                          </div>
+                          <div
+                            className="h-5 rounded-xl border border-[rgba(28,46,62,0.06)]"
+                            style={{
+                              background:
+                                "linear-gradient(to right, #FF8C00, #FFD080, #FFFDE8, #E8F4FF)",
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
+        </div>
+      </section>
+
       {/* Educational Card — transparent, humble */}
       <section className="bg-[#F9F8F6] border border-[#A8854A]/20 rounded-[20px] p-5 flex items-start gap-3">
         <div
@@ -611,6 +912,72 @@ export function Tracker() {
           </p>
         </div>
       </section>
+
+      {/* Warning Overlay */}
+      <AnimatePresence>
+        {showWarning && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 z-50"
+              onClick={rejectWarning}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100%-3rem)] max-w-sm bg-white rounded-[24px] p-6 shadow-[0_16px_64px_rgba(0,0,0,0.2)] flex flex-col gap-4"
+            >
+              <div className="flex items-center gap-3">
+                <div className="size-10 rounded-2xl bg-[#FFAA01]/15 flex items-center justify-center flex-shrink-0">
+                  <AlertTriangle className="size-5 text-[#FFAA01]" />
+                </div>
+                <p
+                  className="text-[16px] text-[#1C2E3E]"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontWeight: 700,
+                  }}
+                >
+                  Caution
+                </p>
+              </div>
+              <p
+                className="text-[13px] text-[#1C2E3E]/80 leading-relaxed"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                Going past 50% brightness and neutral temperature is not
+                advised. Are you sure you want to continue?
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={rejectWarning}
+                  className="flex-1 py-3 rounded-2xl border border-[rgba(28,46,62,0.12)] bg-white text-[#1C2E3E] text-[13px]"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontWeight: 600,
+                  }}
+                >
+                  No
+                </button>
+                <button
+                  onClick={confirmWarning}
+                  className="flex-1 py-3 rounded-2xl bg-[#FFAA01] text-white text-[13px]"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontWeight: 600,
+                  }}
+                >
+                  Yes
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

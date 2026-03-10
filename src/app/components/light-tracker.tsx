@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, Monitor, Zap, Sun, Info, TrendingUp } from 'lucide-react';
 
 const TEAL = '#4A8FA5';
-const SAGE = '#1edd00';
+const SAGE = '#5E9B85';
 const GOLD = '#A8854A';
 const CORAL = '#B8724A';
 

@@ -8,9 +8,9 @@ import svgPaths from "../../imports/svg-fg0yok610r";
 // ── per-state config ────────────────────────────────────────────────────────
 const STATE_CONFIG = {
   Low: {
-    barColor: "#1edd00",
-    badgeBg: "rgba(30,221,0,0.12)",
-    badgeText: "#15b800",
+    barColor: "#5eb53e",
+    badgeBg: "rgba(94,181,62,0.12)",
+    badgeText: "#5eb53e",
     label: "Low Light",
     message: "Eyes at ease — great conditions",
     luxLabel: "Dim / Indoor",
@@ -57,11 +57,11 @@ export function Home() {
 
   return (
     <div
-      className="relative w-full bg-[#fff7ec] overflow-x-hidden"
+      className="relative w-full bg-[#fff7ec] overflow-hidden"
       style={{ minHeight: "100svh" }}
     >
       {/* ── TOP SECTION ───────────────────────────────────────────── */}
-      <div className="relative z-10 px-5 sm:px-7 pt-[env(safe-area-inset-top,48px)] flex flex-col" style={{ paddingTop: 'max(env(safe-area-inset-top, 0px) + 24px, 48px)' }}>
+      <div className="relative z-10 px-7 pt-[83px] flex flex-col">
 
         {/* Header row */}
         <motion.div
@@ -86,7 +86,7 @@ export function Home() {
           >
             {/* active dot */}
             <span
-              className="absolute rounded-full bg-[#1edd00]"
+              className="absolute rounded-full bg-[#5eb53e]"
               style={{ width: 7, height: 7, top: 5, right: 5 }}
             />
             <svg width="12" height="20" fill="none" viewBox="0 0 12.2959 20.6964">
@@ -105,10 +105,11 @@ export function Home() {
           initial={{ opacity: 0, y: -6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.05, ease: "easeOut" }}
-          className="text-[#1C2E3E] text-[29px] whitespace-nowrap"
+          className="text-[#1C2E3E] text-[32px] whitespace-nowrap"
           style={{
-            fontFamily: "'Figtree', sans-serif",
-            fontWeight: 700,
+            fontFamily: "'Manuale', serif",
+            fontStyle: "normal",
+            fontWeight: 600,
             lineHeight: "36px",
             marginTop: 0,
           }}
@@ -124,9 +125,9 @@ export function Home() {
           className="mt-1"
         >
           <span
-            className="inline-block rounded-[71px] px-3 py-0.5 text-[#1edd00] text-[12px]"
+            className="inline-block rounded-[71px] px-3 py-0.5 text-[#5eb53e] text-[12px]"
             style={{
-              backgroundColor: "rgba(30,221,0,0.09)",
+              backgroundColor: "rgba(94,181,62,0.09)",
               fontFamily: "'DM Sans', sans-serif",
               fontWeight: 600,
               fontVariationSettings: "'opsz' 14",
@@ -142,12 +143,9 @@ export function Home() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.15, ease: "easeOut" }}
-          className="rounded-[24px] mt-6"
+          className="rounded-[24px] mt-[16.78px]"
           style={{
             width: "100%",
-            maxWidth: "min(298px, 100%)",
-            marginLeft: "auto",
-            marginRight: "auto",
             boxShadow: "0px 0px 15px 0px rgba(202,202,202,0.44)",
             background: "rgba(255,252,248,0.96)",
             paddingTop: 17,
@@ -159,7 +157,7 @@ export function Home() {
           {/* Top row: label + animated state badge */}
           <div className="flex items-center justify-between w-full">
             <span
-              className="uppercase text-[#2718d1] text-[11px]"
+              className="uppercase text-[#1c2e3e] text-[11px]"
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: 500,
@@ -301,8 +299,7 @@ export function Home() {
           top: 370,
           left: "50%",
           transform: "translateX(-50%)",
-          width: "200vw",
-          maxWidth: 796,
+          width: 796,
           height: 643,
           zIndex: 1,
         }}
@@ -324,8 +321,8 @@ export function Home() {
           top: 390,
           left: "50%",
           transform: "translateX(-50%)",
-          width: "min(370px, 85vw)",
-          height: "min(370px, 85vw)",
+          width: 370,
+          height: 370,
           zIndex: 5,
         }}
       >
@@ -336,7 +333,7 @@ export function Home() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.92, opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="w-full h-full"
+            style={{ width: 370, height: 370 }}
           >
             <SunCharacter state={state} size={370} />
           </motion.div>
@@ -358,7 +355,7 @@ export function Home() {
 
             {/* Bottom sheet */}
             <motion.div
-              className="fixed bottom-0 left-0 right-0 z-50 rounded-t-[28px] bg-white max-w-md mx-auto"
+              className="fixed bottom-0 left-0 right-0 z-50 rounded-t-[28px] bg-white"
               style={{ paddingBottom: "env(safe-area-inset-bottom, 24px)" }}
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
@@ -444,9 +441,9 @@ export function Home() {
                       <div className="flex flex-col items-end gap-1">
                         {/* Connected dot */}
                         <span className="flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#1edd00]" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#5eb53e]" />
                           <span
-                            className="text-[10px] text-[#1edd00]"
+                            className="text-[10px] text-[#5eb53e]"
                             style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}
                           >
                             Active
@@ -492,7 +489,7 @@ export function Home() {
 
 // ── small battery bar component ─────────────────────────────────────────────
 function BatteryBar({ pct }: { pct: number }) {
-  const color = pct > 50 ? "#1edd00" : pct > 20 ? "#FFAA01" : "#E81A01";
+  const color = pct > 50 ? "#5eb53e" : pct > 20 ? "#FFAA01" : "#E81A01";
   return (
     <div className="flex items-center gap-1">
       <div

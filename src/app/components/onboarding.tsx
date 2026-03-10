@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ChevronRight, Check } from 'lucide-react';
 
 const TEAL = '#4A8FA5';
-const SAGE = '#1edd00';
+const SAGE = '#5E9B85';
 
 export function Onboarding() {
   const [step, setStep] = useState(0);

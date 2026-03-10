@@ -39,7 +39,7 @@ export function IrisGraphic() {
   const getColors = () => {
     switch (state) {
       case "Comfortable":
-        return { outer: "#FFAA01", inner1: "#2619D0", inner2: "#1edd00", pulse: "rgba(255, 170, 1, 0.2)" };
+        return { outer: "#FFAA01", inner1: "#2619D0", inner2: "#5E9B85", pulse: "rgba(255, 170, 1, 0.2)" };
       case "Building Strain":
         return { outer: "#FFAA01", inner1: "#A8854A", inner2: "#2619D0", pulse: "rgba(168, 133, 74, 0.2)" };
       case "Sensitive":

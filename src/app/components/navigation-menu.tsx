@@ -1,16 +1,18 @@
 import { useNavigate, useLocation } from 'react-router';
 import { motion } from 'motion/react';
-import { Home, BarChart2, Eye } from 'lucide-react';
+import { Home, BarChart2, Sun, Wind, Layers } from 'lucide-react';
 
-const ACCENT = '#2619D0';
+const TEAL = '#4A8FA5';
 
 const NAV_ITEMS = [
-  { path: '/home', icon: Home, label: 'Home' },
-  { path: '/activity', icon: BarChart2, label: 'Activity' },
-  { path: '/lighting', icon: Eye, label: 'Lighting' },
+  { path: '/home', icon: Home, label: 'Today' },
+  { path: '/timeline', icon: BarChart2, label: 'Timeline' },
+  { path: '/light-tracker', icon: Sun, label: 'Light' },
+  { path: '/ease', icon: Wind, label: 'Ease' },
+  { path: '/patterns', icon: Layers, label: 'Patterns' },
 ];
 
-const HIDDEN_PATHS = ['/recovery'];
+const HIDDEN_PATHS = ['/', '/recovery'];
 
 export function NavigationMenu() {
   const navigate = useNavigate();
@@ -19,9 +21,7 @@ export function NavigationMenu() {
   if (HIDDEN_PATHS.includes(location.pathname)) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-40"
-      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
-    >
+    <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-40">
       {/* Gradient fade above nav */}
       <div
         className="h-8 pointer-events-none"
@@ -41,7 +41,7 @@ export function NavigationMenu() {
           {NAV_ITEMS.map(item => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path ||
-              (item.path === '/home' && location.pathname === '/');
+              (item.path === '/patterns' && location.pathname === '/privacy');
 
             return (
               <button
@@ -54,20 +54,20 @@ export function NavigationMenu() {
                   <motion.div
                     layoutId="activeNavBg"
                     className="absolute inset-0 rounded-2xl"
-                    style={{ background: `${ACCENT}12` }}
+                    style={{ background: `${TEAL}12` }}
                     transition={{ type: 'spring', stiffness: 400, damping: 35 }}
                   />
                 )}
                 <Icon
                   className="w-5 h-5 relative z-10 transition-all"
-                  style={{ color: isActive ? ACCENT : '#8B9EB0' }}
+                  style={{ color: isActive ? TEAL : '#8B9EB0' }}
                 />
                 <span
                   className="relative z-10 transition-all"
                   style={{
                     fontSize: '0.65rem',
                     fontWeight: isActive ? 600 : 400,
-                    color: isActive ? ACCENT : '#8B9EB0',
+                    color: isActive ? TEAL : '#8B9EB0',
                     letterSpacing: '0.01em',
                   }}
                 >
@@ -77,7 +77,7 @@ export function NavigationMenu() {
                   <motion.div
                     layoutId="activeNavDot"
                     className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
-                    style={{ background: ACCENT }}
+                    style={{ background: TEAL }}
                     transition={{ type: 'spring', stiffness: 400, damping: 35 }}
                   />
                 )}

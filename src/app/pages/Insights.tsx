@@ -56,8 +56,8 @@ const weeklyData = [
   { day: "Wed", lux: 900, load: 40, barColor: "#A8854A" },
   { day: "Thu", lux: 1200, load: 70, barColor: "#B8724A" },
   { day: "Fri", lux: 1600, load: 90, barColor: "#B8724A" },
-  { day: "Sat", lux: 800, load: 30, barColor: "#1edd00" },
-  { day: "Sun", lux: 700, load: 25, barColor: "#1edd00" },
+  { day: "Sat", lux: 800, load: 30, barColor: "#5eb53e" },
+  { day: "Sun", lux: 700, load: 25, barColor: "#5eb53e" },
 ];
 
 const patternInsights = [
@@ -94,7 +94,7 @@ const patternInsights = [
 ];
 
 const weeklyStats = [
-  { label: "Avg Daily Load", value: "55", suffix: "/100", change: -8, color: "#1edd00" },
+  { label: "Avg Daily Load", value: "55", suffix: "/100", change: -8, color: "#5eb53e" },
   { label: "Busiest Day", value: "Fri", suffix: "", change: 0, color: "#B8724A" },
   { label: "Rest Periods", value: "12", suffix: "", change: 3, color: "#4A8FA5" },
   { label: "Screen Adj.", value: "3.2", suffix: "h/day", change: 1.5, color: "#2619D0" },
@@ -106,7 +106,7 @@ const tips = [
     title: "Morning Natural Light",
     desc: "Spending 10–15 minutes outdoors in the morning may help your eyes adjust better to indoor lighting for the rest of the day.",
     tag: "Recommended",
-    tagColor: "#1edd00",
+    tagColor: "#5eb53e",
     icon: <Sun className="size-5" />,
     when: "Before 10 AM",
   },
@@ -138,14 +138,16 @@ export function Insights() {
   const [expandedTip, setExpandedTip] = useState<string | null>(null);
 
   return (
-    <div className="flex flex-col gap-6 px-5 sm:px-6 pt-12 pb-28">
+    <div className="flex flex-col gap-6 px-6 pt-[83px] pb-28">
       {/* Header */}
       <header className="flex flex-col gap-1">
         <p
-          className="text-[#1C2E3E] text-[24px]"
+          className="text-[#1C2E3E] text-[32px]"
           style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontVariationSettings: "'opsz' 14",
+            fontFamily: "'Manuale', serif",
+            fontStyle: "normal",
+            fontWeight: 600,
+            lineHeight: "36px",
           }}
         >
           Weekly Recap
@@ -194,7 +196,7 @@ export function Insights() {
               <div
                 className="flex items-center gap-0.5"
                 style={{
-                  color: s.change > 0 ? "#1edd00" : "#B8724A",
+                  color: s.change > 0 ? "#5eb53e" : "#B8724A",
                 }}
               >
                 {s.change > 0 ? (
@@ -325,7 +327,7 @@ export function Insights() {
               {/* Legend */}
               <div className="flex justify-between items-center px-1 mt-2">
                 <div className="flex items-center gap-1.5">
-                  <div className="w-4 h-0.5 rounded-full bg-[#1edd00]" />
+                  <div className="w-4 h-0.5 rounded-full bg-[#5eb53e]" />
                   <span
                     className="text-[9px] text-[#8b9eb0]"
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -415,7 +417,7 @@ export function Insights() {
               {/* Legend */}
               <div className="flex justify-between items-center px-1 mt-2">
                 <div className="flex items-center gap-1.5">
-                  <div className="size-2 rounded-full bg-[#1edd00]" />
+                  <div className="size-2 rounded-full bg-[#5eb53e]" />
                   <span
                     className="text-[9px] text-[#8b9eb0]"
                     style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}

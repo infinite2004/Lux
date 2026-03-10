@@ -34,7 +34,7 @@ export function VisualLoadChart() {
 
   const getColor = (s: string) => {
     switch (s) {
-      case "Comfortable": return "bg-[#1edd00]";
+      case "Comfortable": return "bg-[#5E9B85]";
       case "Building Strain": return "bg-[#A8854A]";
       case "Sensitive": return "bg-[#B8724A]";
       case "Recovering": return "bg-[#4A8FA5]";

@@ -7,9 +7,9 @@ type ComfortState = 'Comfortable' | 'Building Strain' | 'Sensitive' | 'Recoverin
 
 const STATE_CONFIG: Record<ComfortState, { color: string; ring: string; bg: string; label: string; message: string }> = {
   'Comfortable': {
-    color: '#1edd00',
-    ring: '#1edd0020',
-    bg: '#1edd0010',
+    color: '#5E9B85',
+    ring: '#5E9B8520',
+    bg: '#5E9B8510',
     label: 'Comfortable',
     message: 'Your eyes are handling today\'s light well. A calm, easy morning.',
   },
@@ -307,7 +307,7 @@ export function Home() {
         <div className="grid grid-cols-3 gap-3">
           {[
             { icon: Eye, label: 'Visual Load', value: `${visualLoad}`, unit: '/100', color: '#4A8FA5' },
-            { icon: MapPin, label: 'Environment', value: environment, unit: '', color: '#1edd00', small: true },
+            { icon: MapPin, label: 'Environment', value: environment, unit: '', color: '#5E9B85', small: true },
             { icon: RefreshCw, label: 'Since Rest', value: timeSinceReset, unit: '', color: '#A8854A' },
           ].map((card, i) => {
             const Icon = card.icon;
@@ -363,7 +363,7 @@ export function Home() {
               className="h-full rounded-full"
               style={{
                 width: '71%',
-                background: 'linear-gradient(90deg, #1edd00, #A8854A)',
+                background: 'linear-gradient(90deg, #5E9B85, #A8854A)',
               }}
             />
           </div>
@@ -393,7 +393,7 @@ export function Home() {
           <div className="flex items-end gap-0.5 h-12">
             {BAR_HEIGHTS.map((h, i) => {
               const active = i <= 14;
-              const color = h > 65 ? '#B8724A' : h > 45 ? '#A8854A' : '#1edd00';
+              const color = h > 65 ? '#B8724A' : h > 45 ? '#A8854A' : '#5E9B85';
               return (
                 <div
                   key={i}
@@ -426,8 +426,8 @@ export function Home() {
               boxShadow: '0 2px 12px rgba(28,46,62,0.06)',
             }}
           >
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#1edd0015' }}>
-              <MapPin className="w-4 h-4" style={{ color: '#1edd00' }} />
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#5E9B8515' }}>
+              <MapPin className="w-4 h-4" style={{ color: '#5E9B85' }} />
             </div>
             <div>
               <div style={{ color: '#1C2E3E', fontSize: '0.875rem', fontWeight: 500 }}>Your Space</div>

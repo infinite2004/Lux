@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { TrendingUp, TrendingDown, Award, AlertCircle, Lightbulb, ArrowRight } from 'lucide-react';
 
 const TEAL = '#4A8FA5';
-const SAGE = '#1edd00';
+const SAGE = '#5E9B85';
 const GOLD = '#A8854A';
 const CORAL = '#B8724A';
 
@@ -313,7 +313,7 @@ function WeeklyRecap() {
         className="rounded-3xl px-5 py-5"
         style={{
           background: 'linear-gradient(135deg, #EAF2EE, #EFF6F9)',
-          border: '1px solid rgba(30,221,0,0.22)',
+          border: '1px solid rgba(94,155,133,0.22)',
           boxShadow: '0 2px 12px rgba(28,46,62,0.05)',
         }}
       >

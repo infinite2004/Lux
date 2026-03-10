@@ -14,6 +14,7 @@ import {
   Zap,
   ChevronDown,
   Check,
+  AlertTriangle,
   Info,
   Plus,
   ToggleLeft,
@@ -190,7 +191,7 @@ function HubChip({
     >
       <div
         className={`size-1.5 rounded-full ${
-          hub.connected ? "bg-[#1edd00]" : "bg-[#8b9eb0]/40"
+          hub.connected ? "bg-[#5eb53e]" : "bg-[#8b9eb0]/40"
         }`}
       />
       <span
@@ -201,7 +202,7 @@ function HubChip({
       </span>
       {hub.connected && (
         <span
-          className="text-[10px] text-[#1edd00]"
+          className="text-[10px] text-[#5eb53e]"
           style={{ fontFamily: "'DM Sans', sans-serif" }}
         >
           {hub.rooms} rooms
@@ -418,6 +419,14 @@ export function EaseMode() {
   );
   const [showReasoning, setShowReasoning] = useState(false);
   const [connectedToast, setConnectedToast] = useState<string | null>(null);
+  const [showWarning, setShowWarning] = useState(false);
+  const [pendingRoomUpdate, setPendingRoomUpdate] = useState<{
+    id: string;
+    patch: Partial<RoomState>;
+  } | null>(null);
+  const [confirmedRoomIds, setConfirmedRoomIds] = useState<Set<string>>(
+    new Set()
+  );
 
   const scene = SCENES[state];
 
@@ -440,9 +449,43 @@ export function EaseMode() {
   }
 
   function updateRoom(id: string, patch: Partial<RoomState>) {
+    if (patch.brightness !== undefined || patch.kelvin !== undefined) {
+      const room = rooms.find((r) => r.id === id);
+      if (room && !confirmedRoomIds.has(id)) {
+        const newBrightness = patch.brightness ?? room.brightness;
+        const newKelvin = patch.kelvin ?? room.kelvin;
+        if (newBrightness > 50 || newKelvin >= 5000) {
+          setPendingRoomUpdate({ id, patch });
+          setShowWarning(true);
+          return;
+        }
+      }
+    }
     setRooms((prev) =>
       prev.map((r) => (r.id === id ? { ...r, ...patch } : r))
     );
+  }
+
+  function confirmWarning() {
+    if (pendingRoomUpdate) {
+      setRooms((prev) =>
+        prev.map((r) =>
+          r.id === pendingRoomUpdate.id
+            ? { ...r, ...pendingRoomUpdate.patch }
+            : r
+        )
+      );
+      setConfirmedRoomIds(
+        (prev) => new Set(prev).add(pendingRoomUpdate.id)
+      );
+    }
+    setShowWarning(false);
+    setPendingRoomUpdate(null);
+  }
+
+  function rejectWarning() {
+    setShowWarning(false);
+    setPendingRoomUpdate(null);
   }
 
   function toggleHub(id: string) {
@@ -462,7 +505,7 @@ export function EaseMode() {
   }
 
   return (
-    <div className="flex flex-col gap-6 px-5 sm:px-6 pt-12 pb-28">
+    <div className="flex flex-col gap-6 px-7 pt-[83px] pb-28">
 
       {/* ── Connected Toast ── */}
       <AnimatePresence>
@@ -474,7 +517,7 @@ export function EaseMode() {
             exit={{ opacity: 0, y: -12, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 380, damping: 30 }}
             className="fixed top-12 left-1/2 -translate-x-1/2 z-[80] flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-[0_6px_24px_rgba(0,0,0,0.12)]"
-            style={{ background: "#1edd00", minWidth: 220, maxWidth: 320 }}
+            style={{ background: "#5eb53e", minWidth: 220, maxWidth: 320 }}
           >
             <div className="size-6 rounded-full bg-white/30 flex items-center justify-center flex-shrink-0">
               <Check className="size-3.5 text-white" strokeWidth={3} />
@@ -500,12 +543,14 @@ export function EaseMode() {
       {/* ── Header ── */}
       <header className="flex flex-col gap-1">
         <p
-          className="text-[#1C2E3E] text-[24px]"
+          className="text-[#1C2E3E] text-[32px]"
           style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontVariationSettings: "'opsz' 14",
+            fontFamily: "'Manuale', serif",
+            fontStyle: "normal",
+            fontWeight: 600,
+            lineHeight: "36px",
           }}
-        ><span className="font-bold">Smart Lighting</span></p>
+        >Smart Lighting</p>
         <p
           className="text-[#8b9eb0] text-[13px]"
           style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -529,9 +574,9 @@ export function EaseMode() {
           </p>
           {connectedHub && (
             <span className="flex items-center gap-1.5">
-              <div className="size-1.5 rounded-full bg-[#1edd00]" />
+              <div className="size-1.5 rounded-full bg-[#5eb53e]" />
               <span
-                className="text-[10px] text-[#1edd00]"
+                className="text-[10px] text-[#5eb53e]"
                 style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}
               >
                 {connectedHub.name} active
@@ -701,7 +746,7 @@ export function EaseMode() {
             whileTap={{ scale: 0.97 }}
             className="w-full py-3.5 rounded-2xl flex items-center justify-center gap-2 transition-all"
             style={{
-              backgroundColor: applied ? "#1edd00" : scene.accent,
+              backgroundColor: applied ? "#5eb53e" : scene.accent,
               color: "white",
             }}
           >
@@ -880,19 +925,77 @@ export function EaseMode() {
       {/* ── Tip footer ── */}
       <div className="bg-[#F9F8F6] border border-[#FFAA01]/20 rounded-[16px] p-4 flex items-start gap-3">
         <Lightbulb className="size-4 text-[#FFAA01] flex-shrink-0 mt-0.5" />
-        <div
+        <p
           className="text-[11px] text-[#1C2E3E]/70 leading-relaxed"
           style={{ fontFamily: "'DM Sans', sans-serif" }}
-        >
-          <p>Lux reads your cumulative lux-hours and automatically selects a home lighting scene designed to complement — not add to — your light load. The lower your remaining capacity, the warmer and dimmer the suggestion.</p>
-          <p className="mt-2" style={{ fontWeight: 700, color: '#1C2E3E' }}>How it works:</p>
-          <ol className="mt-1.5 list-decimal list-inside space-y-1 text-[#1C2E3E]/70">
-            <li>Your sensor tracks cumulative lux-hours throughout the day.</li>
-            <li>Luma matches your current load to the best complementary scene.</li>
-            <li>Connected lights adjust automatically — or you can apply manually.</li>
-          </ol>
-        </div>
+        > Lux reads your cumulative lux-hours and automatically selects a home lighting scene designed to complement — not add to — your light load. The lower your remaining capacity, the warmer and dimmer the lights should be.</p>
       </div>
+
+      {/* Warning Overlay */}
+      <AnimatePresence>
+        {showWarning && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 z-50"
+              onClick={rejectWarning}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100%-3rem)] max-w-sm bg-white rounded-[24px] p-6 shadow-[0_16px_64px_rgba(0,0,0,0.2)] flex flex-col gap-4"
+            >
+              <div className="flex items-center gap-3">
+                <div className="size-10 rounded-2xl bg-[#FFAA01]/15 flex items-center justify-center flex-shrink-0">
+                  <AlertTriangle className="size-5 text-[#FFAA01]" />
+                </div>
+                <p
+                  className="text-[16px] text-[#1C2E3E]"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontWeight: 700,
+                  }}
+                >
+                  Caution
+                </p>
+              </div>
+              <p
+                className="text-[13px] text-[#1C2E3E]/80 leading-relaxed"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                Going past 50% brightness and neutral temperature is not
+                advised. Are you sure you want to continue?
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={rejectWarning}
+                  className="flex-1 py-3 rounded-2xl border border-[rgba(28,46,62,0.12)] bg-white text-[#1C2E3E] text-[13px]"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontWeight: 600,
+                  }}
+                >
+                  No
+                </button>
+                <button
+                  onClick={confirmWarning}
+                  className="flex-1 py-3 rounded-2xl bg-[#FFAA01] text-white text-[13px]"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontWeight: 600,
+                  }}
+                >
+                  Yes
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

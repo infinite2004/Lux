@@ -20,7 +20,7 @@ const ZONES: Zone[] = [
 
 const ZONE_STYLE = {
   glare:    { color: '#B8724A', bg: '#B8724A18', border: '#B8724A40' },
-  balanced: { color: '#1edd00', bg: '#1edd0018', border: '#1edd0040' },
+  balanced: { color: '#5E9B85', bg: '#5E9B8518', border: '#5E9B8540' },
   contrast: { color: '#A8854A', bg: '#A8854A18', border: '#A8854A40' },
   quiet:    { color: '#4A8FA5', bg: '#4A8FA518', border: '#4A8FA540' },
 };
@@ -150,7 +150,7 @@ export function EnvironmentScan() {
                 className="absolute inset-x-0"
                 style={{
                   height: '3px',
-                  background: 'linear-gradient(90deg, transparent, #4A8FA5, #1edd00, #4A8FA5, transparent)',
+                  background: 'linear-gradient(90deg, transparent, #4A8FA5, #5E9B85, #4A8FA5, transparent)',
                   boxShadow: '0 0 16px rgba(74, 143, 165, 0.8)',
                 }}
               />

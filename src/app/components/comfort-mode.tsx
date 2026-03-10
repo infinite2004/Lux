@@ -79,7 +79,7 @@ export function ComfortMode() {
     },
     {
       id: 'larger', label: 'Larger text', sub: 'Easier on the eyes',
-      icon: Type, active: largerText, onToggle: () => setLargerText(!largerText), color: '#1edd00',
+      icon: Type, active: largerText, onToggle: () => setLargerText(!largerText), color: '#5E9B85',
     },
     {
       id: 'quiet', label: 'Quieter display', sub: 'Minimal visual activity',
@@ -128,7 +128,7 @@ export function ComfortMode() {
           className="rounded-3xl overflow-hidden"
           style={{
             background: autoAdapt
-              ? `linear-gradient(135deg, ${TEAL}12, #1edd0010)`
+              ? `linear-gradient(135deg, ${TEAL}12, #5E9B8510)`
               : '#FFFFFF',
             border: `1px solid ${autoAdapt ? TEAL + '40' : 'rgba(28,46,62,0.08)'}`,
             boxShadow: autoAdapt

@@ -20,7 +20,7 @@ const CONTRIBUTORS: Contributor[] = [
 ];
 
 const LEVEL_CONFIG = {
-  low: { color: '#1edd00', bg: '#1edd0012', label: 'Low' },
+  low: { color: '#5E9B85', bg: '#5E9B8512', label: 'Low' },
   medium: { color: GOLD, bg: `${GOLD}12`, label: 'Medium' },
   high: { color: CORAL, bg: `${CORAL}12`, label: 'Higher' },
 };

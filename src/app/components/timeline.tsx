@@ -75,7 +75,7 @@ function buildCurve(): { hour: number; burden: number }[] {
 }
 
 function burdenColor(b: number) {
-  if (b < 35) return '#1edd00';
+  if (b < 35) return '#5E9B85';
   if (b < 58) return '#A8854A';
   if (b < 75) return '#B8724A';
   return '#C06050';
@@ -153,11 +153,11 @@ export function Timeline() {
                 </filter>
                 {/* Color gradient along path — approximate with time-based stops */}
                 <linearGradient id="line-color" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#1edd00" />
+                  <stop offset="0%" stopColor="#5E9B85" />
                   <stop offset="35%" stopColor="#A8854A" />
                   <stop offset="55%" stopColor="#B8724A" />
-                  <stop offset="65%" stopColor="#1edd00" />
-                  <stop offset="80%" stopColor="#1edd00" />
+                  <stop offset="65%" stopColor="#5E9B85" />
+                  <stop offset="80%" stopColor="#5E9B85" />
                   <stop offset="90%" stopColor="#B8724A" />
                   <stop offset="100%" stopColor="#B8724A" />
                 </linearGradient>
@@ -199,7 +199,7 @@ export function Timeline() {
                 );
                 const ex = toX(ev.hour);
                 const ey = toY(nearPt.burden);
-                const color = ev.type === 'recovery' ? '#1edd00' : ev.type === 'high' ? '#B8724A' : '#A8854A';
+                const color = ev.type === 'recovery' ? '#5E9B85' : ev.type === 'high' ? '#B8724A' : '#A8854A';
                 return (
                   <g key={i} onClick={() => setSelectedEvent(ev)} style={{ cursor: 'pointer' }}>
                     <circle cx={ex} cy={ey} r="10" fill={color} fillOpacity="0.15" />
@@ -222,7 +222,7 @@ export function Timeline() {
         {/* Legend */}
         <div className="flex gap-4 px-1">
           {[
-            { color: '#1edd00', label: 'Comfortable' },
+            { color: '#5E9B85', label: 'Comfortable' },
             { color: '#A8854A', label: 'Building' },
             { color: '#B8724A', label: 'Sensitive' },
           ].map(l => (
@@ -240,8 +240,8 @@ export function Timeline() {
           </p>
           <div className="space-y-3">
             {EVENTS.map((ev, i) => {
-              const color = ev.type === 'recovery' ? '#1edd00' : ev.type === 'high' ? '#B8724A' : '#A8854A';
-              const typeBg = ev.type === 'recovery' ? '#1edd0012' : ev.type === 'high' ? '#B8724A12' : '#A8854A12';
+              const color = ev.type === 'recovery' ? '#5E9B85' : ev.type === 'high' ? '#B8724A' : '#A8854A';
+              const typeBg = ev.type === 'recovery' ? '#5E9B8512' : ev.type === 'high' ? '#B8724A12' : '#A8854A12';
               return (
                 <motion.button
                   key={i}

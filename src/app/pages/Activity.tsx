@@ -32,7 +32,7 @@ const barData = [
 const locationData = [
   { label: "Morning Screen", pct: 34, color: "#E81A01" },
   { label: "Office Lighting", pct: 47, color: "#FFAA01" },
-  { label: "Café Environment", pct: 10, color: "#1edd00" },
+  { label: "Café Environment", pct: 10, color: "#5eb53e" },
   { label: "Night Screen", pct: 10, color: "#2619D0" },
 ];
 
@@ -40,14 +40,15 @@ export function Activity() {
   const { luxHours, currentLux } = useHealth();
 
   return (
-    <div className="relative flex flex-col min-h-screen w-full">
-      <div className="flex flex-col px-5 sm:px-7 pt-16 pb-32">
+    <div className="relative flex flex-col min-h-screen">
+      <div className="flex flex-col px-7 pt-[83px] pb-32">
         {/* Title */}
         <h1
-          className="text-[#1C2E3E] text-[29px]"
+          className="text-[#1C2E3E] text-[32px]"
           style={{
-            fontFamily: "'Figtree', sans-serif",
-            fontWeight: 700,
+            fontFamily: "'Manuale', serif",
+            fontStyle: "normal",
+            fontWeight: 600,
             lineHeight: "36px",
           }}
         >
@@ -100,7 +101,7 @@ export function Activity() {
             {["Morning", "Afternoon", "Evening", "Night"].map((label) => (
               <span
                 key={label}
-                className="text-[#FFAA01] text-[11.2px]"
+                className="text-[#1c2e3e] text-[11.2px]"
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
                   fontWeight: 500,
@@ -111,6 +112,7 @@ export function Activity() {
               </span>
             ))}
           </div>
+
         </motion.div>
 
         {/* Cumulative + Peak — two separate cards in a row */}
@@ -120,11 +122,8 @@ export function Activity() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="flex-1 bg-white rounded-[16px] px-3 py-2.5 border border-[rgba(28,46,62,0.08)] shadow-[0px_2px_12px_0px_rgba(28,46,62,0.06)] flex items-center gap-2"
+            className="flex-1 bg-white rounded-[16px] pl-5 pr-3 py-3 border border-[rgba(28,46,62,0.08)] shadow-[0px_2px_12px_0px_rgba(28,46,62,0.06)] flex items-start gap-2"
           >
-            <svg className="size-5 text-[#1C2E3E] shrink-0" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="1.5">
-              <path strokeLinecap="round" d="M3 5h14M3 10h14M3 15h14" />
-            </svg>
             <div>
               <div className="flex items-baseline gap-1">
                 <span
@@ -150,6 +149,17 @@ export function Activity() {
               >
                 Cumulative
               </p>
+              <span
+                className="inline-block text-[10px] px-2 py-0.5 rounded-full mt-1.5"
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontWeight: 600,
+                  backgroundColor: luxHours <= 35000 ? "rgba(94,181,62,0.15)" : "rgba(232,26,1,0.12)",
+                  color: luxHours <= 35000 ? "#5eb53e" : "#c21500",
+                }}
+              >
+                {luxHours <= 35000 ? "Safe" : "Unsafe"}
+              </span>
             </div>
           </motion.div>
 
@@ -158,15 +168,12 @@ export function Activity() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
-            className="flex-1 bg-white rounded-[16px] px-3 py-2.5 border border-[rgba(28,46,62,0.08)] shadow-[0px_2px_12px_0px_rgba(28,46,62,0.06)] flex items-center gap-2"
+            className="flex-1 bg-white rounded-[16px] pl-5 pr-3 py-3 border border-[rgba(28,46,62,0.08)] shadow-[0px_2px_12px_0px_rgba(28,46,62,0.06)] flex items-start gap-2"
           >
-            <svg className="size-5 text-[#FFAA01] shrink-0" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="1.5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M2 14l4-5 3 3 3-4 4 5" />
-            </svg>
             <div>
               <div className="flex items-baseline gap-1">
                 <span
-                  className="text-[#FFAA01] text-[24px]"
+                  className="text-[#1c2e3e] text-[24px]"
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontWeight: 700,
@@ -342,7 +349,7 @@ function DonutChart({
       {/* Center text */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span
-          className="text-[#2619D0] text-[22px]"
+          className="text-[#1C2E3E] text-[22px]"
           style={{
             fontFamily: "'DM Sans', sans-serif",
             fontWeight: 700,
