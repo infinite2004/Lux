@@ -4,7 +4,7 @@ import { HealthProvider } from './context/HealthContext';
 import { EaseModeProvider } from './context/EaseModeContext';
 import { SheetProvider } from './context/SheetContext';
 import { Toaster } from 'sonner';
-import { Layout } from './components/Layout';
+import { Layout } from './components/layout';
 import { Home } from './pages/Home';
 import { Activity } from './pages/Activity';
 import { EaseMode } from './pages/EaseMode';
